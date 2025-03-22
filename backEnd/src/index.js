@@ -6,6 +6,7 @@ dotenv.config();
 import express from 'express';
 
 import {authRoutes} from './routes/auth.route.js';
+import {messageRoutes} from './routes/message.route.js';
 import {connectDB} from './lib/db.js';
 
 const PORT = process.env.PORT || 3001;
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 
 app.use("/api/auth", authRoutes)
+app.use("/api/message", messageRoutes)
 
 
 app.listen(PORT, () => {
