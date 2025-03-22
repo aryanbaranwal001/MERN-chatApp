@@ -3,8 +3,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const generateToken = (userId, res) => {
-
-  
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
@@ -16,8 +14,5 @@ export const generateToken = (userId, res) => {
     secure: process.env.NODE_ENV === "production" ? true : false,
   });
 
-
-
   return token;
-
 };
