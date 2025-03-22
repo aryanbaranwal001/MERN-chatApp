@@ -6,23 +6,22 @@ export const signup = async (req, res) => {
   const { email, fullName, password, profilePicture } = req.body;
   try {
     if (!email || !fullName || !password) {
-      res
-        .status(400)
-        .json({ message: "all fields, email, fullName & password must be given" });
-      return;
+      return res.status(400).json({
+        message: "all fields, email, fullName & password must be given",
+      });
     }
 
     if (password.length < 8) {
-      res
+      return res
         .status(400)
         .json({ message: "Password must be at least 8 characters long" });
-      return;
     }
 
     const user = await UserModel.findOne({ email });
     if (user) {
-      res.status(400).json({ message: "User already exists in Database" });
-      return;
+      return res
+        .status(400)
+        .json({ message: "User already exists in Database " + user });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -45,29 +44,56 @@ export const signup = async (req, res) => {
       // I dont think this is necessary as in my previos project without it
       // the user was still saved to the database
 
-      res.status(201).json({
+      return res.status(201).json({
         _id: newUser._id,
         email: newUser.email,
         fullName: newUser.fullName,
         profilePicture: newUser.profilePicture,
       });
-      return;
     } else {
-      res.status(500).json({ message: "Failed to create user" });
-      return;
+      return res.status(500).json({ message: "Failed to create user" });
     }
   } catch (error) {
     console.log("error occured in signup controller::", error.message);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
     // console.log(error);
-    return;
   }
 };
 
-export const login = (req, res) => {
-  res.send("login route");
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password); // await because function is async // returns a promise
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    generateToken(user._id, res);
+
+    return res.status(200).json({
+      email: user.email,
+      fullName: user.fullName,
+    });
+  } catch (error) {
+    console.log("error occured in login controller::", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 export const logout = (req, res) => {
-  res.send("logout route");
+  try {
+    res.cookie("JWTtoken", "", { maxAge: 0 });
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.log("error occured in logout controller::", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };

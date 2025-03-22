@@ -26,4 +26,4 @@ Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the cli
     at signup (file:///home/eren/vscodeprojects/MERN-chatApp/backEnd/src/controllers/auth.controllers.js:50:21) {
     }
 
-- added return statements after each res.status(xx).xx statements.
+- added return statements for each res.status(xx).xx statements.
