@@ -11,3 +11,4 @@
 ### The Changes between the followed Video code and My code
 - I have used mongoDB community edition app with compass whereas, video used atlas.
 - Changed the backend server port to 3001 from 5000 from the starting itself.
+- In src/lib/utils.js, in res.cookie, expires takes in date rather than just milliseconds, and hence updated that.
