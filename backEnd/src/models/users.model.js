@@ -25,8 +25,7 @@ const userSchema = new mongoose.Schema({
 );
 
 
-const UserModel = mongoose.model('User', userSchema);
-
+const UserModel = mongoose.model('userdata', userSchema);
 // mongoose wantws the collection name to be singular and first letter capital
 
 
