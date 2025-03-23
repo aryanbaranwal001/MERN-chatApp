@@ -20,7 +20,6 @@ const App = () => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log(authUser);
 
 
   if (isCheckingAuth && !authUser) {
