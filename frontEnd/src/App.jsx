@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
 import {
   HomePage,
   LoginPage,
@@ -20,6 +22,7 @@ const App = () => {
 
   console.log(authUser);
 
+
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -30,6 +33,7 @@ const App = () => {
 
   return (
     <>
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/signup" element={!authUser ? <SignUpPage />  : <Navigate to="/login" /> } />
